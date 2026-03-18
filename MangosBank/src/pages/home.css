@@ -29,6 +29,13 @@ div.nav{
     align-items: center;
 }
 
+h1.slogan{
+    font-size: 3rem;
+    text-decoration: underline;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
 a.headerLink{
     text-decoration: none;
     font-weight: 700;

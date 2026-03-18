@@ -27,7 +27,7 @@ const styleBackgroundImg = {
         </div>
         <div className='main'>
           <div className='section'>
-            <h1>Plante hoje, colha amanhã</h1>
+            <h1 className='slogan'>Plante hoje, colha amanhã</h1>
             <Link className='clienteLink' to="/cliente" target="_blank">
               Quero ser Mangos
             </Link>
