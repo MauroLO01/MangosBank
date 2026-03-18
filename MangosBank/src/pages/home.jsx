@@ -1,31 +1,39 @@
 import './home.css';
+import backgroundImage from '../assets/images.jpg';
 import { Link } from 'react-router-dom';
 
 function Home() {
+
+// imagem de fundo
+
+const styleBackgroundImg = {
+  backgroundImage: "url(${/assets/images.jpg})",
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'center',
+  height: '100dvh',
+  width: '100%',
+};
+
   return (
     <>
-      <section>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/cliente">Abra sua conta</Link>
-            <Link to="/login">Entrar</Link>
-          </nav>
-        </header>
-
+      <div className='body'>
+        <div className='header'>
+          <Link className='headerLink' to="/">Home</Link>
+          <div className='nav'>
+            <Link className='headerLink' to="/cliente">Abra sua conta</Link>
+            <Link className='headerLink' to="/login">Entrar</Link>
+          </div>
+        </div>
         <div className='main'>
           <div className='section'>
             <h1>Plante hoje, colha amanhã</h1>
-            <Link to="/cliente">Quero ser MangosBank</Link>
+            <Link className='clienteLink' to="/cliente" target="_blank">
+              Quero ser Mangos
+            </Link>
           </div>
         </div>
-      </section>
-
-      <section>
-        <Link to="/cliente" target="_blank">
-          Seja um Mangos Client
-        </Link>
-      </section>
+      </div>
     </>
   );
 }
