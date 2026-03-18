@@ -10,6 +10,14 @@
     min-height: 100vh;
 }
 
+.header {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    background-color: ff5f6fa;
+    padding: 20px 60px;
+}
+
 .card {
     background: white;
     padding: 20px;

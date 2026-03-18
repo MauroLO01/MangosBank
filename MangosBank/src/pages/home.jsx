@@ -1,5 +1,5 @@
 import './home.css';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 function Home() {
   return (
@@ -7,8 +7,7 @@ function Home() {
       <section>
         <header>
           <nav>
-            <Link to="/">Home</Link>
-            <Link to="/cliente">Abra sua conta</Link>
+            <Link to="/home">Home</Link>
             <Link to="/login">Entrar</Link>
           </nav>
         </header>
@@ -16,13 +15,12 @@ function Home() {
         <div className='main'>
           <div className='section'>
             <h1>Plante hoje, colha amanhã</h1>
-            <Link to="/cliente">Quero ser MangosBank</Link>
           </div>
         </div>
       </section>
 
       <section>
-        <Link to="/cliente" target="_blank">
+        <Link to="./dashboard" target="blank">
           Seja um Mangos Client
         </Link>
       </section>
