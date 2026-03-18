@@ -1,4 +1,5 @@
 import "./dashboard.css";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 
 function Dashboard() {
@@ -38,11 +39,11 @@ function Dashboard() {
     return (
         <div className="container">
             <div className="header">
-            <ul>
-                <li><link to="./home">Home</link></li>
-                <li><link to="./home">Invest</link></li>
-                <li><link to="./home"></link></li>
-            </ul>
+                <ul>
+                    <li><Link to="/">Home</Link></li>
+                    <li><Link to="/dashboard">Invest</Link></li>
+                    <li><Link to="/dashboard">Outra opção</Link></li>
+                </ul>
             </div>
 
             <div className="card-saldo">

@@ -1,6 +1,10 @@
 import './home.css';
+<<<<<<< HEAD
 import backgroundImage from '../assets/images.jpg';
 import { Link } from 'react-router-dom';
+=======
+import { Link } from "react-router-dom";
+>>>>>>> 4111010dab1b879c881190eb64cec7c0b2033944
 
 function Home() {
 
@@ -17,6 +21,7 @@ const styleBackgroundImg = {
 
   return (
     <>
+<<<<<<< HEAD
       <div className='body'>
         <div className='header'>
           <Link className='headerLink' to="/">Home</Link>
@@ -34,6 +39,28 @@ const styleBackgroundImg = {
           </div>
         </div>
       </div>
+=======
+      <section>
+        <header>
+          <nav>
+            <Link to="/home">Home</Link>
+            <Link to="/login">Entrar</Link>
+          </nav>
+        </header>
+
+        <div className='main'>
+          <div className='section'>
+            <h1>Plante hoje, colha amanhã</h1>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <Link to="./dashboard" target="blank">
+          Seja um Mangos Client
+        </Link>
+      </section>
+>>>>>>> 4111010dab1b879c881190eb64cec7c0b2033944
     </>
   );
 }
