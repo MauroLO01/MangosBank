@@ -1,5 +1,6 @@
 import './home.css';
 import { Link } from "react-router-dom";
+import Login from "./login"
 
 function Home() {
   return (
@@ -20,7 +21,7 @@ function Home() {
       </section>
 
       <section>
-        <Link to="./dashboard" target="blank">
+        <Link to="./login" target="blank">
           Seja um Mangos Client
         </Link>
       </section>
