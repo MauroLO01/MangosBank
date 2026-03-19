@@ -1,12 +1,12 @@
-<<<<<<< HEAD
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './pages/home.jsx';
 import Cliente from "./pages/dashboard";
-=======
-import { Routes, Route } from "react-router-dom";
-import Home from "./Pages/Home.jsx";
 import Dashboard from "./pages/dashboard.jsx";
->>>>>>> 4111010dab1b879c881190eb64cec7c0b2033944
+import Logo from './assets/icon-logo2.png';
+import linkPlayStore from './assets/playstore.png';
+import linkAppleStore from './assets/apple-store.png';
+import arrowLinkClient from './assets/arrow-right2.png';
+
 
 function App() {
   return (
