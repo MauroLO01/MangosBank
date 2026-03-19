@@ -19,6 +19,7 @@ function Home() {
         </div>
         <div className='main'>
           <div className='section'>
+            <img className='logoH1' src={Logo} alt="Logo" />
             <h1 className='slogan'>Plante hoje, colha amanhã</h1>
             <Link className='clienteLink' to="/cliente" target="_blank">
               Quero ser Mangos <img src={arrowLinkClient} alt="Seta" />
