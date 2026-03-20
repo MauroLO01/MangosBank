@@ -51,6 +51,7 @@ div.body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     min-height: 100dvh;
+    min-width: 100%;
 }
 
 div.header {
@@ -70,6 +71,7 @@ div.nav {
     width: 20%;
     justify-content: space-evenly;
     align-items: center;
+    gap: 0.4rem;
 }
 
 h1.slogan {
@@ -92,6 +94,9 @@ a.headerLink {
     font-weight: 700;
     letter-spacing: 2px;
     color: var(--text);
+    border: 2px solid transparent;
+    padding: 8px 20px;
+    border-radius: 8px;
 }
 
 a.headerLinkLogin{
@@ -114,7 +119,8 @@ a.headerLinkLogin:hover {
 }
 
 a.headerLink:hover {
-    color: var(--text-muted);
+    border-color: var(--text-muted);
+    background: rgba(0, 0, 0, 0.2);
     transition: all 0.2s ease-in;
 }
 
