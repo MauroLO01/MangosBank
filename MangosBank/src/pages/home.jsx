@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import Logo from '../assets/icon-logo2.png';
 import linkPlayStore from '../assets/playstore.png';
 import arrowLinkClient from '../assets/arrow-right2.png';
-import linkAppleStore from '../assets/apple-store.png';
+import linkAppleStore from '../assets/apple-store.png'; 
+
 
 function Home() {
 
@@ -31,8 +32,8 @@ function Home() {
           <div className="linkStores">
           <p>Baixe o nosso App</p>
             <div className="linkAppStores">
-              <Link><img src={linkPlayStore} alt="Play Store" srcset="" /></Link>
-              <Link><img src={linkAppleStore} alt="Apple Store" srcset="" /></Link>
+              <a href="https://play.google.com" target="_blank"><img src={linkPlayStore} alt="Play Store" srcset="" /></a>
+              <a href="https://apps.apple.com" target="_blank"><img src={linkAppleStore} alt="Apple Store" srcset="" /></a>
             </div>
           </div>
         </div>
