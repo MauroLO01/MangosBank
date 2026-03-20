@@ -30,7 +30,7 @@ img.logo {
     height: auto;
 }
 
-img.logoH1{
+img.logoH1 {
     width: 100%;
     max-width: 520px;
     height: auto;
@@ -51,7 +51,6 @@ div.body {
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
     min-height: 100vh;
     overflow-y: auto;
 }
@@ -103,7 +102,7 @@ a.headerLink {
     border-radius: 8px;
 }
 
-a.headerLinkLogin{
+a.headerLinkLogin {
     background: var(--accent);
     text-align: center;
     text-decoration: none;
@@ -147,17 +146,10 @@ div.main {
     flex: 1;
     justify-content: space-around;
     align-items: center;
-    min-height: 99dvh;
     flex-direction: column;
+    min-height: 100dvh;
     background: rgba(20, 20, 20, 0.1);
     padding-top: 80px; /* Espaço para header fixo */
-}
-
-a.clienteLink {
-    text-decoration: none;
-    color: tomato;
-    letter-spacing: 2px;
-    padding: 1rem;
 }
 
 a.clienteLink:hover {
@@ -177,7 +169,7 @@ div.footer {
     z-index: 1;
 }
 
-div.linkAppStores{
+div.linkAppStores {
     flex-direction: row;
     margin: 1rem 0;
     gap: 1rem;
@@ -201,7 +193,8 @@ div.linkAppStores{
         gap: 0.3rem;
     }
 
-    a.headerLink, a.headerLinkLogin {
+    a.headerLink,
+    a.headerLinkLogin {
         padding: 6px 15px;
         font-size: 0.9rem;
     }
@@ -223,7 +216,8 @@ div.linkAppStores{
         gap: 0.2rem;
     }
 
-    a.headerLink, a.headerLinkLogin {
+    a.headerLink,
+    a.headerLinkLogin {
         padding: 6px 12px;
         font-size: 0.9rem;
     }
@@ -254,13 +248,15 @@ div.linkAppStores{
         width: 100%;
     }
 
-    a.headerLink, a.headerLinkLogin {
+    a.headerLink,
+    a.headerLinkLogin {
         padding: 5px 10px;
         font-size: 0.8rem;
     }
 
     div.main {
-        padding-top: 100px; /* Ajuste para header em coluna */
+        padding-top: 100px;
+        /* Ajuste para header em coluna */
     }
 
     div.footer {
