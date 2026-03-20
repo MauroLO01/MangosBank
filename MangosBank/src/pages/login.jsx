@@ -44,7 +44,6 @@ function Login() {
 
     return (
         <div className="login-wrapper">
-
             {/* ── Overlay de verificação ── */}
             {(verifying || verified) && (
                 <div className={`verify-overlay ${verified ? "verified" : ""}`}>

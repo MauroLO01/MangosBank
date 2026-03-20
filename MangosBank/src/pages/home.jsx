@@ -14,7 +14,7 @@ function Home() {
         </Link>
 
         <div className='nav'>
-          <Link className='headerLink' to="/cliente">Abra sua conta</Link>
+          <Link className='headerLink' to="/cadastrar">Abra sua conta</Link>
           <Link className='headerLinkLogin' to="/login">Entrar</Link>
         </div>
       </div>
@@ -24,7 +24,7 @@ function Home() {
           <img className='logoH1' src={Logo} alt="Logo" />
           <h1 className='slogan'>Plante hoje, colha amanhã</h1>
 
-          <Link className='clienteLink' to="/cliente">
+          <Link className='clienteLink' to="/login">
             Quero ser Mangos <img src={arrowLinkClient} alt="Seta" />
           </Link>
         </div>
