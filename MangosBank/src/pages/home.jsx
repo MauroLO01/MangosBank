@@ -9,7 +9,7 @@ function Home() {
         <header>
           <nav>
             <Link to="/home">Home</Link>
-            <Link to="/login">Entrar</Link>
+            <Link to="./login">Entrar</Link>
           </nav>
         </header>
 
