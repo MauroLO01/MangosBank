@@ -1,0 +1,517 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* ── Reset & Variables ───── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
+:root {
+    --bg: #0d0d0d;
+    --surface: #141414;
+    --border: #2a2a2a;
+    --gold: #c9a84c;
+    --gold-dim: #8a6e2e;
+    --text: #f0ece4;
+    --muted: #6b6560;
+    --error: #ff6b6b;
+    --success: #4ecdc4;
+    --radius: 4px;
+}
+
+/* ── Page Layout ────────── */
+body {
+    background-color: var(--bg);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* noise grain overlay */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* soft radial glow behind the card */
+body::after {
+    content: '';
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201, 168, 76, 0.07) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+div.cadastro-container {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: var(--bg);
+}
+
+/* ── Card ─────── */
+.cadastro-wrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    padding: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow:
+        0 0 0 1px rgba(201, 168, 76, 0.06),
+        0 32px 64px rgba(0, 0, 0, 0.6),
+        0 8px 24px rgba(0, 0, 0, 0.4);
+    animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+    overflow-y: auto;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Grid Layout ───── */
+.cadastro-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+    margin-bottom: 32px;
+}
+
+.cadastro-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.section-title {
+    font-family: 'Roboto', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+}
+
+.cadastro-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* ── Logo / Header ────── */
+.cadastro-logo {
+    display: block;
+    height: 40px;
+    max-width: 120px;
+    margin: 0 auto 32px;
+    object-fit: contain;
+    filter: brightness(1.1);
+    animation: fadeUp 0.6s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cadastro-title {
+    font-family: 'Roboto', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.01em;
+    text-align: center;
+    margin-bottom: 6px;
+    animation: fadeUp 0.6s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cadastro-subtitle {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-align: center;
+    margin-bottom: 36px;
+    animation: fadeUp 0.6s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Input ───────── */
+.cadastro-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: fadeUp 0.6s 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cadastro-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+}
+
+.cadastro-input {
+    width: 100%;
+    padding: 13px 16px;
+    background: #0d0d0d;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cadastro-input::placeholder {
+    color: #3a3530;
+}
+
+.cadastro-input:focus {
+    border-color: var(--gold-dim);
+    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.08);
+}
+
+.cadastro-input.error {
+    border-color: var(--error);
+}
+
+.cadastro-file {
+    width: 100%;
+    padding: 13px 16px;
+    background: #0d0d0d;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.cadastro-file:focus {
+    border-color: var(--gold-dim);
+    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.08);
+}
+
+.cadastro-file.error {
+    border-color: var(--error);
+}
+
+/* ── Error Messages ─── */
+.error-message {
+    font-size: 12px;
+    color: var(--error);
+    margin-top: 4px;
+}
+
+.loading {
+    font-size: 12px;
+    color: var(--gold);
+    margin-top: 4px;
+}
+
+/* ── Button ──── */
+.cadastro-button {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--gold) 0%, #a8832e 100%);
+    border: none;
+    border-radius: var(--radius);
+    color: #0d0d0d;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: opacity 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    animation: fadeUp 0.6s 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cadastro-button::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* ── Responsividade ── */
+@media (max-width: 768px) {
+    .cadastro-wrapper {
+        width: 95%;
+        max-width: 600px;
+        padding: 24px;
+    }
+
+    .cadastro-logo {
+        height: 35px;
+        max-width: 150px;
+    }
+
+    .cadastro-button {
+        max-width: 100%;
+    }
+
+    .cadastro-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .cadastro-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .cadastro-title {
+        font-size: 24px;
+    }
+
+    .section-title {
+        font-size: 16px;
+    }
+
+    .cadastro-logo {
+        height: 40px;
+        margin-bottom: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cadastro-wrapper {
+        width: 95%;
+        max-width: 100%;
+        padding: 16px;
+        max-height: 95vh;
+    }
+
+    .cadastro-logo {
+        height: 30px;
+        max-width: 120px;
+    }
+
+    .cadastro-button {
+        max-width: 100%;
+        padding: 12px;
+        font-size: 13px;
+    }
+
+    .cadastro-title {
+        font-size: 20px;
+    }
+
+    .cadastro-subtitle {
+        font-size: 12px;
+        margin-bottom: 24px;
+    }
+
+    .section-title {
+        font-size: 14px;
+    }
+
+    .cadastro-input,
+    .cadastro-file {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    .cadastro-label {
+        font-size: 10px;
+    }
+
+    .cadastro-button {
+        padding: 12px;
+        font-size: 13px;
+    }
+
+    .cadastro-footer {
+        font-size: 11px;
+    }
+}
+
+.cadastro-button:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(201, 168, 76, 0.25);
+}
+
+.cadastro-button:hover::after {
+    opacity: 1;
+}
+
+.cadastro-button:active {
+    transform: translateY(0);
+    box-shadow: none;
+    opacity: 1;
+}
+
+/* ── Footer line ── */
+.cadastro-footer {
+    margin-top: 32px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    animation: fadeUp 0.6s 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Overlay de Verificação ── */
+.verify-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(13, 13, 13, 0.92);
+    backdrop-filter: blur(6px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    animation: fadeIn 0.3s ease both;
+}
+
+.verify-overlay.verified {
+    background: rgba(13, 13, 13, 0.95);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ── Spinner ──────────────────────────────────── */
+.verify-spinner {
+    width: 52px;
+    height: 52px;
+    border: 2px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ── Label de status ──────────────────────────── */
+.verify-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    animation: fadeUp 0.4s 0.1s ease both;
+}
+
+.verified .verify-label {
+    color: var(--gold);
+}
+
+/* ── SVG check ────────────────────────────────── */
+.verify-check {
+    width: 64px;
+    height: 64px;
+    animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.4);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.verify-check svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+/* círculo que se desenha */
+.check-circle {
+    stroke: var(--gold);
+    stroke-width: 2;
+    fill: none;
+    stroke-dasharray: 157;
+    stroke-dashoffset: 157;
+    animation: drawCircle 0.5s 0.1s ease forwards;
+}
+
+@keyframes drawCircle {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.check-mark {
+    stroke: var(--gold);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    stroke-dasharray: 36;
+    stroke-dashoffset: 36;
+    animation: drawCheck 0.35s 0.55s ease forwards;
+}
+
+@keyframes drawCheck {
+    to {
+        stroke-dashoffset: 0;
+    }
+}

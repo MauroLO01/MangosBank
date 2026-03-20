@@ -9,12 +9,13 @@ function Home() {
   return (
     <div className='body'>
       <div className='header'>
-        <Link className='headerLink' to="/app">
+        <Link className='headerLink' to="/">
           <img className='logo' src={Logo} alt="Home" />
         </Link>
 
         <div className='nav'>
           <Link className='headerLink' to="/cadastrar">Abra sua conta</Link>
+          <Link className='headerLink' to="/cadastro">Abra sua conta</Link>
           <Link className='headerLinkLogin' to="/login">Entrar</Link>
         </div>
       </div>
