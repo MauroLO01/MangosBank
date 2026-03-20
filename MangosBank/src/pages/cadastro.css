@@ -32,6 +32,18 @@ body {
     overflow: hidden;
 }
 
+/* Botão voltar */
+.backButton {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    font-size: 2rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
 /* noise grain overlay */
 body::before {
     content: '';

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./cadastro.css";
 import Logo from "../assets/icon-logo2.png";
 
@@ -189,6 +189,7 @@ function Cadastro() {
                     </div>
                 )}
                 {/* ── Formulário ── */}
+                <Link className="backButton" to="/">←</Link>
                 <a className="cadastro-logo" href="/" target="_blank" ><img src={Logo} alt="Logo" className="cadastro-logo" /></a>
                 <h1 className="cadastro-title">Abra sua conta Mangos</h1>
                 <p className="cadastro-subtitle">Preencha todos os dados para continuar</p>

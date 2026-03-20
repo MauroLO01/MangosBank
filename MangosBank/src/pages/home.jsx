@@ -24,7 +24,7 @@ function Home() {
           <img className='logoH1' src={Logo} alt="Logo" />
           <h1 className='slogan'>Plante hoje, colha amanhã</h1>
 
-          <Link className='clienteLink' to="/cliente">
+          <Link className='clienteLink' to="/cadastro">
             Quero ser Mangos <img src={arrowLinkClient} alt="Seta" />
           </Link>
         </div>
