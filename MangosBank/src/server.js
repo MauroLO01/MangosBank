@@ -29,34 +29,70 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/cadastro", async (req, res) => {
-    const { nome, cpf } = req.body;
+    const {
+        nome,
+        cpf,
+        email,
+        dataNascimento,
+        telefone,
+        profissao,
+        rendaMensal,
+        cep,
+        rua,
+        numero,
+        bairro,
+        cidade,
+        estado,
+        senha
+    } = req.body;
 
     try {
         const result = await pool.query(
-            "INSERT INTO users (nome, cpf) VALUES ($1, $2) RETURNING *",
-            [nome, cpf]
+            `INSERT INTO users 
+            (nome, cpf, email, data_nascimento, telefone, profissao, renda_mensal, cep, rua, numero, bairro, cidade, estado, senha)
+            VALUES 
+            ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)
+            RETURNING *`,
+            [
+                nome,
+                cpf,
+                email,
+                dataNascimento,
+                telefone,
+                profissao,
+                rendaMensal,
+                cep,
+                rua,
+                numero,
+                bairro,
+                cidade,
+                estado,
+                senha
+            ]
         );
 
         res.json(result.rows[0]);
     } catch (err) {
+        console.error(err);
         res.status(500).json({ error: err.message });
     }
 });
 
 app.post("/login", async (req, res) => {
-    const { cpf } = req.body;
+    const { cpf, senha } = req.body;
 
     try {
         const result = await pool.query(
-            "SELECT * FROM users WHERE cpf = $1",
-            [cpf]
+            "SELECT * FROM users WHERE cpf = $1 AND senha = $2",
+            [cpf, senha]
         );
 
         if (result.rows.length === 0) {
-            return res.status(404).json({ error: "Usuário não encontrado!" });
+            return res.status(401).json({ error: "CPF ou senha inválidos" });
         }
 
         res.json(result.rows[0]);
+
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -87,4 +123,37 @@ app.post("/deposito", async (req, res) => {
 console.log("3 - antes do listen")
 app.listen(3000, () => {
     console.log("Servidor rodando na porta 3000");
+});
+
+app.post("/cadastro", async (req, res) => {
+    const {
+        nome,
+        cpf,
+        email,
+        dataNascimento,
+        telefone,
+        profissao,
+        rendaMensal,
+        cep,
+        rua,
+        numero,
+        bairro,
+        cidade,
+        estado,
+        senha
+    } = req.body;
+
+    try {
+        const result = await pool.query(
+            `INSERT INTO users
+            (nome, cpf, email, dataNascimento, telefone, profissao, rendaMensal, cep, rua, numero, bairro, cidade, estado, senha
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)
+            RETURNING *`,
+            [nome, cpf, email, dataNascimento, telefone, profissao, rendaMensal, cep, rua, bairro, cidade, estado, senha]
+        );
+
+        res.json(result.rows[0]);
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
 });

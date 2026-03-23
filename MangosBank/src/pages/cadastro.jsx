@@ -108,8 +108,6 @@ function Cadastro() {
         if (!bairro.trim()) novosErros.bairro = "Bairro é obrigatório";
         if (!cidade.trim()) novosErros.cidade = "Cidade é obrigatória";
         if (!estado.trim()) novosErros.estado = "Estado é obrigatório";
-        if (!frenteDocumento) novosErros.frenteDocumento = "Upload da frente do documento é obrigatório";
-        if (!versoDocumento) novosErros.versoDocumento = "Upload do verso do documento é obrigatório";
         if (!senha || !validarSenha(senha)) novosErros.senha = "Senha deve ter pelo menos 8 caracteres, com maiúscula, minúscula e número";
         if (senha !== confirmarSenha) novosErros.confirmarSenha = "Senhas não coincidem";
 
@@ -117,37 +115,38 @@ function Cadastro() {
         return Object.keys(novosErros).length === 0;
     }
 
-    async function handleCadastro() {
-        if (!validarFormulario()) return;
+   async function handleCadastro() {
+    if (!validarFormulario()) return;
 
-        setVerifying(true);
+    setVerifying(true);
 
-        try {
-            const formData = new FormData();
-            formData.append("nome", nome);
-            formData.append("cpf", cpf);
-            formData.append("email", email);
-            formData.append("dataNascimento", dataNascimento);
-            formData.append("telefone", telefone);
-            formData.append("profissao", profissao);
-            formData.append("rendaMensal", rendaMensal);
-            formData.append("cep", cep);
-            formData.append("rua", rua);
-            formData.append("numero", numero);
-            formData.append("bairro", bairro);
-            formData.append("cidade", cidade);
-            formData.append("estado", estado);
-            formData.append("senha", senha);
-            if (frenteDocumento) formData.append("frenteDocumento", frenteDocumento);
-            if (versoDocumento) formData.append("versoDocumento", versoDocumento);
+    try {
+        const res = await fetch("http://localhost:3000/cadastro", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                nome,
+                cpf,
+                email,
+                dataNascimento,
+                telefone,
+                profissao,
+                rendaMensal,
+                cep,
+                rua,
+                numero,
+                bairro,
+                cidade,
+                estado,
+                senha
+            }),
+        });
 
-            const res = await fetch("http://localhost:3000/cadastro", {
-                method: "POST",
-                body: formData,
-            });
+        const data = await res.json();
 
-            const data = await res.json();
-
+        setTimeout(() => {
             setVerifying(false);
             setVerified(true);
 
@@ -156,13 +155,14 @@ function Cadastro() {
                 navigate("/dashboard");
             }, 1400);
 
-        } catch (err) {
-            console.error(err);
-            alert("Erro ao conectar com o servidor");
-            setVerifying(false);
-        }
-    }
+        }, 1200);
 
+    } catch (err) {
+        console.error(err);
+        alert("Erro ao conectar com o servidor");
+        setVerifying(false);
+    }
+}
     return (
         <div className="cadastro-container">
             <div className="cadastro-wrapper">
@@ -172,7 +172,7 @@ function Cadastro() {
                         {verifying && (
                             <>
                                 <div className="verify-spinner" />
-                                <p className="verify-label">Verificando dados…</p>
+                                <p className="verify-label">Verificando seu cadastro…</p>
                             </>
                         )}
                         {verified && (
@@ -359,30 +359,6 @@ function Cadastro() {
                                 value={rendaMensal}
                                 onChange={(e) => setRendaMensal(e.target.value)}
                             />
-                        </div>
-                    </div>
-                    {/* Documentos */}
-                    <div className="cadastro-section">
-                        <h2 className="section-title">Documentos</h2>
-                        <div className="cadastro-field">
-                            <label className="cadastro-label">Frente do RG ou CNH</label>
-                            <input
-                                className={`cadastro-file ${errors.frenteDocumento ? 'error' : ''}`}
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => setFrenteDocumento(e.target.files[0])}
-                            />
-                            {errors.frenteDocumento && <span className="error-message">{errors.frenteDocumento}</span>}
-                        </div>
-                        <div className="cadastro-field">
-                            <label className="cadastro-label">Verso do RG ou CNH</label>
-                            <input
-                                className={`cadastro-file ${errors.versoDocumento ? 'error' : ''}`}
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => setVersoDocumento(e.target.files[0])}
-                            />
-                            {errors.versoDocumento && <span className="error-message">{errors.versoDocumento}</span>}
                         </div>
                     </div>
                     {/* Senha */}

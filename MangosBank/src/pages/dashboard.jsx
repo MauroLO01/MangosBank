@@ -1,11 +1,24 @@
 import "./dashboard.css";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 import Logo from "../assets/icon-logo2.png"
 
 function Dashboard() {
-    const user = JSON.parse(localStorage.getItem("User"));
-    const nome = user?.nome || "Cliente";
+    const [user, setUser] = useState(null);
+    useEffect(() => {
+        const atualizarUser = () => {
+            const storedUser = JSON.parse(localStorage.getItem("User"));
+            setUser(storedUser);
+        };
+
+        atualizarUser();
+
+        window.addEventListener("focus", atualizarUser);
+
+        return () => window.removeEventListener("focus", atualizarUser);
+    }, []);
+
+    const nome = user?.nome || "Cliente"
     const [destinatario, setDestinatario] = useState("");
 
     const [saldo, setSaldo] = useState(user?.saldo || 0);

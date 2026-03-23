@@ -104,6 +104,10 @@ div.cadastro-container {
     overflow-y: auto;
 }
 
+.cadastro-wrapper::-webkit-scrollbar{
+    color: black;
+}
+
 @keyframes fadeUp {
     from {
         opacity: 0;
