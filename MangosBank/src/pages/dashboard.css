@@ -32,6 +32,10 @@ body {
     font-family: 'Sora', sans-serif;
 }
 
+button {
+    font-family: inherit;
+}
+
 /* LAYOUT */
 .db-root {
     display: flex;
@@ -85,6 +89,7 @@ body {
     text-align: center;
     cursor: pointer;
     transition: all 0.2s ease;
+    color: #fff;
 }
 
 .db-acao-card:hover {
@@ -106,6 +111,7 @@ body {
 }
 
 .db-modal {
+    position: relative;
     width: 100%;
     max-width: 420px;
     background: var(--bg2);
@@ -113,6 +119,7 @@ body {
     border-radius: var(--radius);
     padding: 30px;
     animation: pop 0.2s ease;
+    align-items: center;
 }
 
 @keyframes pop {
@@ -135,9 +142,10 @@ body {
     border: 1px solid var(--border);
     background: var(--bg3);
     color: var(--text);
-    margin-bottom: 12px;
+    margin: 12px;
     outline: none;
     transition: 0.2s;
+    align-items: center;
 }
 
 .db-modal-input:focus,
@@ -209,6 +217,215 @@ body {
     justify-content: space-between;
     padding: 12px 0;
     border-bottom: 1px solid var(--border);
+}
+
+.db-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.db-titulo {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.db-subtitulo {
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.db-header-data {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.db-saldo-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.db-saldo-label {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.db-saldo-valor {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.db-saldo-acoes {
+    display: flex;
+    gap: 10px;
+}
+
+.db-btn-saldo {
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent);
+    color: white;
+    cursor: pointer;
+}
+
+.db-btn-sacar {
+    background: var(--danger);
+}
+
+.db-secao-titulo {
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.db-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.db-logo img {
+    width: 36px;
+}
+
+.db-logo-text {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.db-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.db-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: var(--text-muted);
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.db-nav-item:hover {
+    background: var(--bg3);
+    color: var(--text);
+}
+
+.db-nav-item.active {
+    background: var(--accent);
+    color: white;
+}
+
+.db-nav-icon {
+    font-size: 14px;
+}
+
+.db-sidebar-bottom {
+    margin-top: auto;
+}
+
+.db-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.db-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+}
+
+.db-user-name {
+    font-weight: 500;
+}
+
+.db-user-role {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.db-olho {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 18px;
+}
+
+.db-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    z-index: 999;
+}
+
+.db-toast-erro {
+    background: var(--danger);
+    color: white;
+}
+
+.db-toast-sucesso {
+    background: var(--accent2);
+    color: black;
+}
+
+.db-extrato-lista {
+    list-style: none;
+}
+
+.db-extrato-detalhe {
+    display: flex;
+    flex-direction: column;
+}
+
+.db-extrato-desc {
+    font-weight: 500;
+}
+
+.db-extrato-data {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.db-extrato-quantia {
+    font-weight: 600;
+}
+
+.db-modal-fechar {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.db-modal-fechar:hover {
+    color: var(--danger);
+    transform: rotate(90deg) scale(1.02);
 }
 
 @media (max-width: 700px) {

@@ -4,35 +4,41 @@ import { useEffect, useEffectEvent, useState } from "react";
 import Logo from "../assets/icon-logo2.png"
 
 function Dashboard() {
-    const [user, setUser] = useState(null);
+
+    const user = JSON.parse(localStorage.getItem("User"));
+    const [saldo, setSaldo] = useState(0);
+    const [extrato, setExtrato] = useState([]);
+    const [valor, setValor] = useState("");
+    const [destinatario, setDestinatario] = useState("");
+    const [modal, setModal] = useState(null);
+    const [erro, setErro] = useState("");
+    const [sucesso, setSucesso] = useState("");
+    const [step, setStep] = useState(1);
+    const [mostrarExtrato, setMostrarExtrato] = useState(false);
+    const [mostrarSaldo, setMostrarSaldo] = useState(true);
+
+    // 2. DEPOIS useEffect
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem("User"));
+        if (user) {
+            setUser(user);
+        }
+    }, []);
+
     useEffect(() => {
         const atualizarUser = () => {
             const storedUser = JSON.parse(localStorage.getItem("User"));
             setUser(storedUser);
         };
 
-        atualizarUser();
-
         window.addEventListener("focus", atualizarUser);
-
         return () => window.removeEventListener("focus", atualizarUser);
     }, []);
 
-    const nome = user?.nome || "Cliente"
-    const [destinatario, setDestinatario] = useState("");
+    // 3. VARIÁVEIS DERIVADAS
 
-    const [saldo, setSaldo] = useState(user?.saldo || 0);
-    const [valor, setValor] = useState("");
-    const [extrato, setExtrato] = useState(user?.extrato || [
-        { tipo: "deposito", desc: "Depósito inicial", valor: 1000, data: "01/03/2026" }
-    ]);
-    const [mostrarExtrato, setMostrarExtrato] = useState(false);
-    const [mostrarSaldo, setMostrarSaldo] = useState(true);
-    const [modal, setModal] = useState(null);
-    const [erro, setErro] = useState("");
-    const [sucesso, setSucesso] = useState("");
-    const [step, setStep] = useState(1);
-
+    const nome = user?.nome || "Cliente";
     const hoje = new Date().toLocaleDateString("pt-BR");
 
     function abrirModal(tipo) {
@@ -188,12 +194,7 @@ function Dashboard() {
                 <div className="db-sidebar-bottom">
                     <div className="db-user">
                         <div className="db-avatar">
-                            {nome.trim().length > 0
-                                ? nome.split(" ").length > 1
-                                    ? nome.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase()
-                                    : nome.slice(0, 2).toUpperCase()
-                                : "??"
-                            }
+                            {user?.nome?.charAt(0).toUpperCase()}
                         </div>
                         <div>
                             <div className="db-user-name">{nome}</div>
@@ -209,7 +210,7 @@ function Dashboard() {
 
                 <header className="db-header">
                     <div>
-                        <h1 className="db-titulo">Olá, {nome}👋</h1>
+                        <h1 className="db-titulo">Olá, {user?.nome}👋</h1>
                         <p className="db-subtitulo">Aqui está um resumo da sua conta</p>
                     </div>
                     <div className="db-header-data">{hoje}</div>

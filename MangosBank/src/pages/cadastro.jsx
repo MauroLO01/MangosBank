@@ -5,10 +5,11 @@ import Logo from "../assets/icon-logo2.png";
 
 function Cadastro() {
     // Dados Pessoais
+    const [user, setUser] = useState(null);
     const [nome, setNome] = useState("");
     const [cpf, setCpf] = useState("");
     const [email, setEmail] = useState("");
-    const [dataNascimento, setDataNascimento] = useState("");
+    const [data_Nascimento, setData_Nascimento] = useState("");
     const [telefone, setTelefone] = useState("");
 
     // Informações da profissão
@@ -22,10 +23,6 @@ function Cadastro() {
     const [bairro, setBairro] = useState("");
     const [cidade, setCidade] = useState("");
     const [estado, setEstado] = useState("");
-
-    // Documentos
-    const [frenteDocumento, setFrenteDocumento] = useState(null);
-    const [versoDocumento, setVersoDocumento] = useState(null);
 
     // Senha
     const [senha, setSenha] = useState("");
@@ -55,9 +52,12 @@ function Cadastro() {
             } else {
                 alert("CEP não encontrado!");
             }
-        } catch (error) {
-            console.error("Erro ao buscar CEP:", error);
-            alert("Erro ao buscar CEP. Tente novamente.");
+        } catch (err) {
+            console.error("🔥 ERRO NO CADASTRO:");
+            console.error("Mensagem:", err.message);
+
+            alert("Erro ao conectar com o servidor");
+            setVerifying(false);
         }
         setCepLoading(false);
     }
@@ -98,71 +98,131 @@ function Cadastro() {
         const novosErros = {};
 
         if (!nome.trim()) novosErros.nome = "Nome é obrigatório";
-        if (!cpf || !validarCPF(cpf)) novosErros.cpf = "CPF inválido";
-        if (!email || !validarEmail(email)) novosErros.email = "Email inválido";
-        if (!dataNascimento || dataNascimento.length !== 8) novosErros.dataNascimento = "Data de nascimento inválida (DDMMYYYY)";
-        if (!telefone || telefone.length < 10) novosErros.telefone = "Telefone inválido";
-        if (!cep || cep.length !== 8) novosErros.cep = "CEP inválido";
-        if (!rua.trim()) novosErros.rua = "Rua é obrigatória";
-        if (!numero.trim()) novosErros.numero = "Número é obrigatório";
-        if (!bairro.trim()) novosErros.bairro = "Bairro é obrigatório";
-        if (!cidade.trim()) novosErros.cidade = "Cidade é obrigatória";
-        if (!estado.trim()) novosErros.estado = "Estado é obrigatório";
-        if (!senha || !validarSenha(senha)) novosErros.senha = "Senha deve ter pelo menos 8 caracteres, com maiúscula, minúscula e número";
-        if (senha !== confirmarSenha) novosErros.confirmarSenha = "Senhas não coincidem";
+
+        if (!cpf || !validarCPF(cpf)) {
+            novosErros.cpf = "CPF inválido";
+        }
+
+        if (!email || !validarEmail(email)) {
+            novosErros.email = "Email inválido";
+        }
+
+        // ✅ VALIDAÇÃO CORRETA DA DATA
+        if (!validarData(data_Nascimento)) {
+            novosErros.data_Nascimento = "Data inválida";
+        }
+
+        if (!telefone || telefone.length < 10) {
+            novosErros.telefone = "Telefone inválido";
+        }
+
+        if (!cep || cep.length !== 8) {
+            novosErros.cep = "CEP inválido";
+        }
+
+        if (!rua.trim()) novosErros.rua = "Rua obrigatória";
+        if (!numero.trim()) novosErros.numero = "Número obrigatório";
+        if (!bairro.trim()) novosErros.bairro = "Bairro obrigatório";
+        if (!cidade.trim()) novosErros.cidade = "Cidade obrigatória";
+        if (!estado.trim()) novosErros.estado = "Estado obrigatório";
+
+        if (!senha || !validarSenha(senha)) {
+            novosErros.senha = "Senha fraca";
+        }
+
+        if (senha !== confirmarSenha) {
+            novosErros.confirmarSenha = "Senhas não coincidem";
+        }
 
         setErrors(novosErros);
         return Object.keys(novosErros).length === 0;
     }
 
-   async function handleCadastro() {
-    if (!validarFormulario()) return;
+    async function handleCadastro() {
+        if (!validarFormulario()) return;
 
-    setVerifying(true);
+        setVerifying(true);
 
-    try {
-        const res = await fetch("http://localhost:3000/cadastro", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                nome,
-                cpf,
-                email,
-                dataNascimento,
-                telefone,
-                profissao,
-                rendaMensal,
-                cep,
-                rua,
-                numero,
-                bairro,
-                cidade,
-                estado,
-                senha
-            }),
-        });
+        try {
+            const res = await fetch("http://localhost:3000/cadastro", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    nome,
+                    cpf,
+                    email,
+                    dataNascimento: formatarData(data_Nascimento),
+                    telefone,
+                    profissao,
+                    rendaMensal: rendaMensal
+                        ? parseFloat(rendaMensal.replace(",", "."))
+                        : 0,
+                    cep,
+                    rua,
+                    numero,
+                    bairro,
+                    cidade,
+                    estado,
+                    senha
+                }),
+            });
 
-        const data = await res.json();
+            const data = await res.json();
 
-        setTimeout(() => {
-            setVerifying(false);
-            setVerified(true);
+            // 🔥 SE DER ERRO DO BACKEND
+            if (!res.ok) {
+                console.error("🔥 ERRO DO BACKEND:");
+                console.log(data);
+                alert(data.error || "Erro ao cadastrar");
+                setVerifying(false);
+                return;
+            }
 
+            // SUCESSO
             setTimeout(() => {
-                localStorage.setItem("User", JSON.stringify(data));
-                navigate("/dashboard");
-            }, 1400);
+                setVerifying(false);
+                setVerified(true);
 
-        }, 1200);
+                setTimeout(() => {
+                    localStorage.setItem("User", JSON.stringify(data));
+                    navigate("/dashboard");
+                }, 1400);
 
-    } catch (err) {
-        console.error(err);
-        alert("Erro ao conectar com o servidor");
-        setVerifying(false);
+            }, 1200);
+
+        } catch (err) {
+            console.error("Erro geral:", err);
+            alert("Erro ao conectar com o servidor");
+            setVerifying(false);
+        }
+
+        if (err.code === "23505") {
+            return res.status(400).json({ error: "CPF já cadastrado" });
+        }
     }
-}
+
+    function formatarData(data) {
+        return `${data.slice(4, 8)}-${data.slice(2, 4)}-${data.slice(0, 2)}`;
+    }
+
+    function validarData(data) {
+        if (data.length !== 8) return false;
+
+        const dia = parseInt(data.slice(0, 2));
+        const mes = parseInt(data.slice(2, 4));
+        const ano = parseInt(data.slice(4, 8));
+
+        const dataObj = new Date(ano, mes - 1, dia);
+
+        return (
+            dataObj.getFullYear() === ano &&
+            dataObj.getMonth() === mes - 1 &&
+            dataObj.getDate() === dia
+        );
+    }
+
     return (
         <div className="cadastro-container">
             <div className="cadastro-wrapper">
@@ -211,14 +271,14 @@ function Cadastro() {
                         <div className="cadastro-field">
                             <label className="cadastro-label">Data de Nascimento</label>
                             <input
-                                className={`cadastro-input ${errors.dataNascimento ? 'error' : ''}`}
+                                className={`cadastro-input ${errors.data_Nascimento ? 'error' : ''}`}
                                 type="text"
                                 placeholder="DDMMYYYY"
-                                value={dataNascimento}
-                                onChange={(e) => setDataNascimento(e.target.value)}
+                                value={data_Nascimento}
+                                onChange={(e) => setData_Nascimento(e.target.value)}
                                 maxLength={8}
                             />
-                            {errors.dataNascimento && <span className="error-message">{errors.dataNascimento}</span>}
+                            {errors.data_Nascimento && <span className="error-message">{errors.data_Nascimento}</span>}
                         </div>
                         <div className="cadastro-field">
                             <label className="cadastro-label">CPF</label>
