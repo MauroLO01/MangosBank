@@ -147,63 +147,66 @@ function Cadastro() {
   }
 
   async function handleCadastro() {
-    if (!validarFormulario()) return;
+  if (!validarFormulario()) return;
 
-    setVerifying(true);
+  setVerifying(true);
 
-    try {
-      // 1. Inserindo os dados na tabela 'usuarios' usando o Supabase
-      const { data, error } = await supabase
-        .from("usuarios")
-        .insert([
-          {
-            nome: nome,
-            cpf: cpf,
-            email: email,
-            data_nascimento: formatarData(data_Nascimento),
-            telefone: telefone,
-            profissao: profissao,
-            renda_mensal: rendaMensal
-              ? parseFloat(rendaMensal.replace(",", "."))
-              : 0,
-            cep: cep,
-            rua: rua,
-            numero: numero,
-            bairro: bairro,
-            cidade: cidade,
-            estado: estado,
-            senha: senha, // Novamente: em um app real, usaríamos Supabase Auth
-          },
-        ])
-        .select(); // Retorna os dados inseridos
-
-      // 2. Tratando erro de banco de dados (ex: CPF ou Email já existem)
-      if (error) {
-        console.error("🔥 ERRO DO BANCO:", error);
-        if (error.code === "23505") {
-          alert("Erro: CPF ou Email já cadastrado!");
-        } else {
-          alert("Erro ao cadastrar: " + error.message);
+  try {
+    // 1. Inserindo os dados na tabela 'usuarios' usando o Supabase
+    const { data, error } = await supabase
+      .from('usuarios')
+      .insert([
+        {
+          nome: nome,
+          cpf: cpf,
+          email: email,
+          data_nascimento: formatarData(data_Nascimento),
+          telefone: telefone,
+          profissao: profissao,
+          renda_mensal: rendaMensal ? parseFloat(rendaMensal.replace(",", ".")) : 0,
+          cep: cep,
+          rua: rua,
+          numero: numero,
+          bairro: bairro,
+          cidade: cidade,
+          estado: estado,
+          senha: senha // Novamente: em um app real, usaríamos Supabase Auth
         }
-        setVerifying(false);
-        return;
+      ])
+      .select(); // Retorna os dados inseridos
+
+    // 2. Tratando erro de banco de dados (ex: CPF ou Email já existem)
+    if (error) {
+      console.error("🔥 ERRO DO BANCO:", error);
+      if (error.code === '23505') {
+        alert("Erro: CPF ou Email já cadastrado!");
+      } else {
+        alert("Erro ao cadastrar: " + error.message);
       }
-
-      // 3. SUCESSO!
-      setTimeout(() => {
-        setVerifying(false);
-        setVerified(true);
-
-        setTimeout(() => {
-          // Salva os dados do usuário no navegador e manda pro login
-          localStorage.setItem("User", JSON.stringify(data[0]));
-          navigate("/login"); // Mudei para /login conforme você pediu!
-        }, 1400);
-      }, 1200);
-    } catch (err) {
-      console.error("Erro geral:", err);
-      alert("Erro ao conectar com o servidor");
       setVerifying(false);
+      return;
+    }
+
+    // 3. SUCESSO!
+    setTimeout(() => {
+      setVerifying(false);
+      setVerified(true);
+
+      setTimeout(() => {
+        // Salva os dados do usuário no navegador e manda pro login
+        localStorage.setItem("User", JSON.stringify(data[0]));
+        navigate("/login"); // Mudei para /login conforme você pediu!
+      }, 1400);
+    }, 1200);
+
+  } catch (err) {
+    console.error("Erro geral:", err);
+    alert("Erro ao conectar com o servidor");
+    setVerifying(false);
+  }
+}
+    if (err.code === "23505") {
+      return res.status(400).json({ error: "CPF já cadastrado" });
     }
   }
 
