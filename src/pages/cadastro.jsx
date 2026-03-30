@@ -6,7 +6,7 @@ import Logo from "../assets/icon-logo2.png";
 
 function Cadastro() {
   // Dados Pessoais
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const [nome, setNome] = useState("");
   const [cpf, setCpf] = useState("");
   const [email, setEmail] = useState("");
@@ -152,52 +152,70 @@ function Cadastro() {
     setVerifying(true);
 
     try {
-      // 1. Inserindo os dados na tabela 'usuarios' usando o Supabase
-      const { data, error } = await supabase
+      const cpfClean = cpf.replace(/\D/g, "");
+
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password: senha,
+        options: {
+          data: {
+            nome,
+            cpf: cpfClean,
+            telefone,
+            profissao,
+          },
+        },
+      });
+
+      if (signUpError) {
+        console.error("Erro supabase auth:", signUpError);
+        setVerifying(false);
+        return alert("Erro ao cadastrar usuário: " + signUpError.message);
+      }
+
+      const authUserId = signUpData?.user?.id;
+
+      const { data: insertedUser, error } = await supabase
         .from("usuarios")
         .insert([
           {
-            nome: nome,
-            cpf: cpf,
-            email: email,
+            auth_user_id: authUserId,
+            nome,
+            cpf: cpfClean,
+            email,
             data_nascimento: formatarData(data_Nascimento),
-            telefone: telefone,
-            profissao: profissao,
-            renda_mensal: rendaMensal
-              ? parseFloat(rendaMensal.replace(",", "."))
-              : 0,
-            cep: cep,
-            rua: rua,
-            numero: numero,
-            bairro: bairro,
-            cidade: cidade,
-            estado: estado,
-            senha: senha, // Novamente: em um app real, usaríamos Supabase Auth
+            telefone,
+            profissao,
+            renda_mensal: rendaMensal ? parseFloat(rendaMensal.replace(",", ".")) : 0,
+            cep,
+            rua,
+            numero,
+            bairro,
+            cidade,
+            estado,
+            senha
           },
         ])
-        .select(); // Retorna os dados inseridos
+        .select();
 
-      // 2. Tratando erro de banco de dados (ex: CPF ou Email já existem)
       if (error) {
         console.error("🔥 ERRO DO BANCO:", error);
-        if (error.code === "23505") {
-          alert("Erro: CPF ou Email já cadastrado!");
-        } else {
-          alert("Erro ao cadastrar: " + error.message);
-        }
         setVerifying(false);
-        return;
+
+        if (error.code === "23505") {
+          return alert("Erro: CPF ou Email já cadastrado!");
+        }
+
+        return alert("Erro ao cadastrar: " + error.message);
       }
 
-      // 3. SUCESSO!
       setTimeout(() => {
         setVerifying(false);
         setVerified(true);
 
         setTimeout(() => {
-          // Salva os dados do usuário no navegador e manda pro login
-          localStorage.setItem("User", JSON.stringify(data[0]));
-          navigate("/login"); // Mudei para /login conforme você pediu!
+          localStorage.setItem("User", JSON.stringify(insertedUser[0]));
+          navigate("/login");
         }, 1400);
       }, 1200);
     } catch (err) {

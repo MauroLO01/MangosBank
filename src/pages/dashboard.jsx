@@ -1,11 +1,11 @@
 import "./dashboard.css";
-import { Link } from "react-router-dom";
-import { useEffect, useEffectEvent, useState } from "react";
-import Logo from "../assets/icon-logo2.png"
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "./supabaseClient";
+import Logo from "../assets/icon-logo2.png";
 
 function Dashboard() {
-
-    const user = JSON.parse(localStorage.getItem("User"));
+    const [user, setUser] = useState(null);
     const [saldo, setSaldo] = useState(0);
     const [extrato, setExtrato] = useState([]);
     const [valor, setValor] = useState("");
@@ -19,22 +19,39 @@ function Dashboard() {
 
     // 2. DEPOIS useEffect
 
+    const navigate = useNavigate();
+
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem("User"));
-        if (user) {
-            setUser(user);
+        async function init() {
+            const {
+                data: { session },
+                error: sessionError,
+            } = await supabase.auth.getSession();
+
+            if (sessionError) {
+                console.error("Erro ao obter sessão:", sessionError);
+            }
+
+            if (!session?.user) {
+                return navigate("/login");
+            }
+
+            const { data: profile, error } = await supabase
+                .from("usuarios")
+                .select("*")
+                .or(`auth_user_id.eq.${session.user.id},email.eq.${session.user.email}`)
+                .single();
+
+            if (error) {
+                console.warn("Perfil não encontrado em usuarios", error);
+                setUser({ ...session.user, profile: null });
+            } else {
+                setUser({ ...session.user, ...profile });
+            }
         }
-    }, []);
 
-    useEffect(() => {
-        const atualizarUser = () => {
-            const storedUser = JSON.parse(localStorage.getItem("User"));
-            setUser(storedUser);
-        };
-
-        window.addEventListener("focus", atualizarUser);
-        return () => window.removeEventListener("focus", atualizarUser);
-    }, []);
+        init();
+    }, [navigate]);
 
     // 3. VARIÁVEIS DERIVADAS
 
@@ -55,6 +72,12 @@ function Dashboard() {
         setValor("");
         setErro("");
         setDestinatario("");
+    }
+
+    async function signOut() {
+        await supabase.auth.signOut();
+        localStorage.removeItem("User");
+        navigate("/login");
     }
 
     function feedback(tipo, msg) {
@@ -201,6 +224,9 @@ function Dashboard() {
                             <div className="db-user-role">Conta corrente</div>
                         </div>
                     </div>
+                    <button className="db-logout-button" onClick={signOut}>
+                        Sair
+                    </button>
                 </div>
             </aside>
 
